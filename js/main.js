@@ -7,6 +7,24 @@ import topojson from 'topojson';
 import THREE from 'THREE';
 import d3 from 'd3';
 
+var countryEvidence = {
+
+    "India": pdflink("./somedocument.pdf"),
+    "Indonesia": youtubelink("https://www.youtube.com/embed/ZnuwB35GYMY"),
+    "Nigeria": pdflink("./somedocument.pdf"),
+    "Madagascar": youtubelink("https://www.youtube.com/embed/ZnuwB35GYMY")
+};
+window.countryEvidence = countryEvidence;
+
+
+function pdflink(doc) {
+    return '<a href="' + doc + '"><img src=\"https://upload.wikimedia.org/wikipedia/commons/2/2c/Pdflogogt.png\" alt=\"Open Document\" /></a>';
+}
+
+function youtubelink(vid) {
+    return '<iframe width="560" height="315" src="' + vid + '" frameborder="0" allowfullscreen></iframe>';
+}
+
 
 d3.json('data/world.json', function(err, data) {
 
@@ -75,13 +93,7 @@ d3.json('data/world.json', function(err, data) {
 
     function onGlobeMousemove(event) {
         var map, material;
-        var countryEvidence = {
 
-
-            "Nigeria": '<a href="./somedocument.pdf"><img src=\"https://upload.wikimedia.org/wikipedia/commons/2/2c/Pdflogogt.png\" alt=\"Open Document\" /></a>',
-            "Madagascar": '<iframe width="560" height="315" src="https://www.youtube.com/embed/ZnuwB35GYMY" frameborder="0" allowfullscreen></iframe>'
-        };
-        window.countryEvidence = countryEvidence;
         // Get pointc, convert to latitude/longitude
         var latlng = getEventCenter.call(this, event);
 
