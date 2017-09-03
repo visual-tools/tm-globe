@@ -19,7 +19,7 @@ d3.json('data/world.json', function(err, data) {
     d3.select("#loading").transition().duration(500)
         .style("opacity", 0).remove();
 
-    var currentCountry, overlay;
+    var currentCountry, overlay, clickedCountry;
 
     var segments = 155; // number of vertices. Higher = better mouse accuracy
 
@@ -54,9 +54,20 @@ d3.json('data/world.json', function(err, data) {
     scene.add(root);
 
     function onGlobeClick(event) {
-
+        console.log("click");
         // Get pointc, convert to latitude/longitude
         var latlng = getEventCenter.call(this, event);
+
+        // Look for country at that latitude/longitude
+        var country = geo.search(latlng[0], latlng[1]);
+
+        if (country !== null && country.code !== clickedCountry) {
+
+            // Track the current country displayed
+            clickedCountry = country.code;
+
+
+        }
 
         // Get new camera position
         var temp = new THREE.Mesh();
@@ -81,14 +92,14 @@ d3.json('data/world.json', function(err, data) {
 
     function onGlobeMousemove(event) {
         var map, material;
-
+        console.log("move");
         // Get pointc, convert to latitude/longitude
         var latlng = getEventCenter.call(this, event);
 
         // Look for country at that latitude/longitude
         var country = geo.search(latlng[0], latlng[1]);
 
-        if (country !== null && country.code !== currentCountry) {
+        if (country !== null && country.code !== clickedCountry) {
 
             // Track the current country displayed
             currentCountry = country.code;
@@ -110,6 +121,15 @@ d3.json('data/world.json', function(err, data) {
                 root.add(overlay);
             } else {
                 overlay.material = material;
+            }
+
+        } else {
+            d3.select("#msg").html(clickedCountry);
+            if (window.countryEvidence[clickedCountry] !== undefined) {
+
+                d3.select("#msg2").html(countryEvidence[clickedCountry]);
+            } else {
+                d3.select("#msg2").html("<p></p>");
             }
         }
     }
