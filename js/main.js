@@ -6,7 +6,13 @@ import { getTween, memoize } from './common/utils';
 import topojson from 'topojson';
 import THREE from 'THREE';
 import d3 from 'd3';
+var countryEvidence = {
 
+
+    "Nigeria": '<a href="./somedocument.pdf"><img src=\"https://upload.wikimedia.org/wikipedia/commons/2/2c/Pdflogogt.png\" alt=\"Open Document\" /></a>',
+    "Madagascar": '<iframe width="560" height="315" src="https://www.youtube.com/embed/ZnuwB35GYMY" frameborder="0" allowfullscreen></iframe>'
+};
+window.countryEvidence = countryEvidence;
 
 d3.json('data/world.json', function(err, data) {
 
@@ -75,13 +81,7 @@ d3.json('data/world.json', function(err, data) {
 
     function onGlobeMousemove(event) {
         var map, material;
-        var countryEvidence = {
 
-
-            "Nigeria": '<a href="./somedocument.pdf"><img src=\"https://upload.wikimedia.org/wikipedia/commons/2/2c/Pdflogogt.png\" alt=\"Open Document\" /></a>',
-            "Madagascar": '<iframe width="560" height="315" src="https://www.youtube.com/embed/ZnuwB35GYMY" frameborder="0" allowfullscreen></iframe>'
-        };
-        window.countryEvidence = countryEvidence;
         // Get pointc, convert to latitude/longitude
         var latlng = getEventCenter.call(this, event);
 
