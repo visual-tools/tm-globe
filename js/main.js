@@ -70,16 +70,16 @@ d3.json('data/world.json', function(err, data) {
         // Get pointc, convert to latitude/longitude
         var latlng = getEventCenter.call(this, event);
 
-        // Look for country at that latitude/longitude
-        var country = geo.search(latlng[0], latlng[1]);
+        // // Look for country at that latitude/longitude
+        // var country = geo.search(latlng[0], latlng[1]);
 
-        if (country !== null && country.code !== clickedCountry) {
+        // if (country !== null && country.code !== clickedCountry) {
 
-            // Track the current country displayed
-            clickedCountry = country.code;
+        //     // Track the current country displayed
+        //     clickedCountry = country.code;
 
 
-        }
+        // }
 
         // Get new camera position
         var temp = new THREE.Mesh();
@@ -110,7 +110,7 @@ d3.json('data/world.json', function(err, data) {
         // Look for country at that latitude/longitude
         var country = geo.search(latlng[0], latlng[1]);
 
-        if (country !== null && country.code !== clickedCountry) {
+        if (country !== null && country.code !== currentCountry) {
 
             // Track the current country displayed
             currentCountry = country.code;
