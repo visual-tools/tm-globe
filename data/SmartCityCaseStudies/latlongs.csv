@@ -1,0 +1,21 @@
+City,Lat,Long,MediaType,PDF name,Media
+Atlanta,33.75,-84.39,pdf,AtlantaCaseStudy.pdf,data/SmartCityCaseStudies/AtlantaCaseStudy.pdf
+Bonn,50.7,6.98,pdf,BonnCaseStudy.pdf,data/SmartCityCaseStudies/BonnCaseStudy.pdf
+Boston,42.31,-71.11,pdf,BostonCaseStudy.pdf,data/SmartCityCaseStudies/BostonCaseStudy.pdf
+Brisbane,-27.38,152.43,pdf,BrisbaneCaseStudy.pdf,data/SmartCityCaseStudies/BrisbaneCaseStudy.pdf
+Bristol,51.47,-2.73,pdf,BristolCaseStudy.pdf,data/SmartCityCaseStudies/BristolCaseStudy.pdf
+Buenos Aires,34.62,-58.57,pdf,BuenosAiresCaseStudy.pdf,data/SmartCityCaseStudies/BuenosAiresCaseStudy.pdf
+Dholera,22.25,72.19,pdf,DholeraCaseStudy.pdf,data/SmartCityCaseStudies/DholeraCaseStudy.pdf
+Dubai,25.08,54.95,pdf,DubaiCaseStudy.pdf,data/SmartCityCaseStudies/DubaiCaseStudy.pdf
+Indonesia,-2.28,99.4,pdf,IndonesiaCaseStudy.pdf,data/SmartCityCaseStudies/IndonesiaCaseStudy.pdf
+Johannesburg,-26.17,27.97,pdf,JohannesburgCaseStudy.pdf,data/SmartCityCaseStudies/JohannesburgCaseStudy.pdf
+Masdar,24.43,54.6,pdf,MasdarCaseStudy.pdf,data/SmartCityCaseStudies/MasdarCaseStudy.pdf
+Milton Keynes,52.04,-0.78,pdf,MiltonKeynesCaseStudy.pdf,data/SmartCityCaseStudies/MiltonKeynesCaseStudy.pdf
+New York City,40.7,-74.26,pdf,NYCCaseStudy.pdf,data/SmartCityCaseStudies/NYCCaseStudy.pdf
+New York University,40.73,-74,pdf,NYUCaseStudy.pdf,data/SmartCityCaseStudies/NYUCaseStudy.pdf
+Pakistan,30.07,60.33,pdf,PakistanCaseStudy.pdf,data/SmartCityCaseStudies/PakistanCaseStudy.pdf
+Palo Alto,37.43,-112.21,pdf,PaloAltoCaseStudy.pdf,data/SmartCityCaseStudies/PaloAltoCaseStudy.pdf
+Singapore,1.31,103.7,pdf,SingaporeCaseStudy.pdf,data/SmartCityCaseStudies/SingaporeCaseStudy.pdf
+Tampere,61.63,23.27,pdf,TampereCaseStudy.pdf,data/SmartCityCaseStudies/TampereCaseStudy.pdf
+Tel Aviv,32.01,34.73,pdf,TelAvivCaseStudy.pdf,data/SmartCityCaseStudies/TelAvivCaseStudy.pdf
+Toronto,43.66,-79.6,pdf,TorontoCaseStudy.pdf,data/SmartCityCaseStudies/TorontoCaseStudy.pdf
