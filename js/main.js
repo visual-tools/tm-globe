@@ -66,15 +66,23 @@ d3.json('data/world_cities.json?_=' + new Date().getTime(), function(err, data) 
     let pointGeometry = new THREE.SphereGeometry(1, 10, 10);
     let pointMaterial = new THREE.MeshPhongMaterial({ color: '#FF0000', transparent: false });
     cities.forEach(function(city) {
-        var pointMesh = new THREE.Mesh(pointGeometry, pointMaterial);
         var lat = city.coordinates[0] * Math.PI / 180;
         var lng = city.coordinates[1] * Math.PI / 180;
-        pointMesh.position.set(
+        var point = new THREE.Vector3(
             200 * Math.cos(lat) * Math.sin(lng),
             200 * Math.sin(lat),
             200 * Math.cos(lat) * Math.cos(lng)
-        );
+        )
+
+        var pointMesh = new THREE.Mesh(pointGeometry, pointMaterial);
+        pointMesh.position.copy(point);
         citiesMesh.add(pointMesh);
+        
+        var textShapes = new THREE.FontUtils.generateShapes(city.name);
+        var text = new THREE.ShapeGeometry(textShapes);
+        var textMesh = new THREE.Mesh(text, new THREE.MeshBasicMaterial({ color: 0xff0000 }));
+        textMesh.position.copy(point);
+        citiesMesh.add(textMesh);
     }); 
     citiesMesh.rotation.y = -Math.PI/2;
 
