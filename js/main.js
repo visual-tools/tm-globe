@@ -1,7 +1,7 @@
 import { scene, camera, renderer } from './common/scene';
 import { setEvents } from './common/setEvents';
 import { convertToXYZ, getEventCenter, geodecoder } from './common/geoHelpers';
-import { mapTexture } from './common/mapTexture';
+import { mapTexture, projection } from './common/mapTexture';
 import { getTween, memoize } from './common/utils';
 import * as topojson from 'topojson';
 import THREE from 'THREE';
@@ -26,7 +26,7 @@ function youtubelink(vid) {
 
 window.countryEvidence = countryEvidence;
 
-d3.json('data/world.json', function(err, data) {
+d3.json('data/world_cities.json?_=' + new Date().getTime(), function(err, data) {
 
     d3.select("#loading").transition().duration(500)
         .style("opacity", 0).remove();
@@ -36,7 +36,8 @@ d3.json('data/world.json', function(err, data) {
     var segments = 155; // number of vertices. Higher = better mouse accuracy
 
     // Setup cache for country textures
-    var countries = topojson.feature(data, data.objects.countries);
+    var countries = topojson.feature(data['world'], data['world'].objects.countries);
+    var cities = data['cities'];
     var geo = geodecoder(countries.features);
 
     var textureCache = memoize(function(cntryID, color) {
@@ -58,35 +59,47 @@ d3.json('data/world.json', function(err, data) {
     var baseMap = new THREE.Mesh(new THREE.SphereGeometry(200, segments, segments), mapMaterial);
     baseMap.rotation.y = Math.PI;
 
-    // create a container node and add the two meshes
+    // add cities
+    var citiesGeometry = new THREE.SphereGeometry(200, segments, segments);
+    let citiesMaterial = new THREE.MeshPhongMaterial({ transparent: true });
+    let citiesMesh = new THREE.Mesh({ transparent: true });
+    let pointGeometry = new THREE.SphereGeometry(1, 10, 10);
+    let pointMaterial = new THREE.MeshPhongMaterial({ color: '#FF0000', transparent: false });
+    cities.forEach(function(city) {
+        var pointMesh = new THREE.Mesh(pointGeometry, pointMaterial);
+        var lat = city.coordinates[0] * Math.PI / 180;
+        var lng = city.coordinates[1] * Math.PI / 180;
+        pointMesh.position.set(
+            200 * Math.cos(lat) * Math.sin(lng),
+            200 * Math.sin(lat),
+            200 * Math.cos(lat) * Math.cos(lng)
+        );
+        citiesMesh.add(pointMesh);
+    }); 
+    citiesMesh.rotation.y = -Math.PI/2;
+
+    // create a container node and add the meshes
     var root = new THREE.Object3D();
     root.scale.set(2.5, 2.5, 2.5);
     root.add(baseGlobe);
     root.add(baseMap);
+    root.add(citiesMesh);
     scene.add(root);
-
     function onGlobeClick(event) {
         console.log("click");
         // Get pointc, convert to latitude/longitude
         var latlng = getEventCenter.call(this, event);
-
         // // Look for country at that latitude/longitude
         // var country = geo.search(latlng[0], latlng[1]);
-
         // if (country !== null && country.code !== clickedCountry) {
-
         //     // Track the current country displayed
         //     clickedCountry = country.code;
-
-
         // }
-
         // Get new camera position
         var temp = new THREE.Mesh();
         temp.position.copy(convertToXYZ(latlng, 900));
         temp.lookAt(root.position);
         temp.rotateY(Math.PI);
-
         for (let key in temp.rotation) {
             if (temp.rotation[key] - camera.rotation[key] > Math.PI) {
                 temp.rotation[key] -= Math.PI * 2;
@@ -94,31 +107,23 @@ d3.json('data/world.json', function(err, data) {
                 temp.rotation[key] += Math.PI * 2;
             }
         }
-
         var tweenPos = getTween.call(camera, 'position', temp.position);
         d3.timer(tweenPos);
-
         var tweenRot = getTween.call(camera, 'rotation', temp.rotation);
         d3.timer(tweenRot);
     }
-
     function onGlobeMousemove(event) {
         var map, material;
         // Get pointc, convert to latitude/longitude
         var latlng = getEventCenter.call(this, event);
-
         // Look for country at that latitude/longitude
         var country = geo.search(latlng[0], latlng[1]);
-
         if (country !== null && country.code !== currentCountry) {
-
             // Track the current country displayed
             currentCountry = country.code;
-
             // Update the html
             d3.select("#msg").html(country.code);
             if (window.countryEvidence[country.code] !== undefined) {
-
                 d3.select("#msg2").html(countryEvidence[country.code]);
             } else {
                 d3.select("#msg2").html("<p></p>");
@@ -133,18 +138,15 @@ d3.json('data/world.json', function(err, data) {
             } else {
                 overlay.material = material;
             }
-
         } else {
             d3.select("#msg").html(clickedCountry);
             if (window.countryEvidence[clickedCountry] !== undefined) {
-
                 d3.select("#msg2").html(countryEvidence[clickedCountry]);
             } else {
                 d3.select("#msg2").html("<p></p>");
             }
         }
     }
-
     setEvents(camera, [baseGlobe], 'click');
     setEvents(camera, [baseGlobe], 'mousemove', 10);
 });

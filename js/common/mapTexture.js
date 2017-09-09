@@ -1,7 +1,7 @@
 import THREE from 'THREE';
 import d3 from 'd3';
 
-var projection = d3.geo.equirectangular()
+export var projection = d3.geo.equirectangular()
   .translate([1024, 512])
   .scale(325);
 
