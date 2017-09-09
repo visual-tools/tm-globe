@@ -3,7 +3,7 @@ import { setEvents } from './common/setEvents';
 import { convertToXYZ, getEventCenter, geodecoder } from './common/geoHelpers';
 import { mapTexture } from './common/mapTexture';
 import { getTween, memoize } from './common/utils';
-import topojson from 'topojson';
+import * as topojson from 'topojson';
 import THREE from 'THREE';
 import d3 from 'd3';
 var countryEvidence = {
