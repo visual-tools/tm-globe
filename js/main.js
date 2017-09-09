@@ -1,9 +1,9 @@
 import { scene, camera, renderer } from './common/scene';
 import { setEvents } from './common/setEvents';
 import { convertToXYZ, getEventCenter, geodecoder } from './common/geoHelpers';
-import { mapTexture } from './common/mapTexture';
+import { mapTexture, projection } from './common/mapTexture';
 import { getTween, memoize } from './common/utils';
-import topojson from 'topojson';
+import * as topojson from 'topojson';
 import THREE from 'THREE';
 import d3 from 'd3';
 var countryEvidence = {
@@ -26,7 +26,7 @@ function youtubelink(vid) {
 
 window.countryEvidence = countryEvidence;
 
-d3.json('data/world.json', function(err, data) {
+d3.json('data/world.json?_=' + new Date().getTime(), function(err, data) { // I'm currently adding things to the world.json so refresh it every time
 
     d3.select("#loading").transition().duration(500)
         .style("opacity", 0).remove();
@@ -37,6 +37,7 @@ d3.json('data/world.json', function(err, data) {
 
     // Setup cache for country textures
     var countries = topojson.feature(data, data.objects.countries);
+    var cities = topojson.feature(data, data.objects.cities);
     var geo = geodecoder(countries.features);
 
     var textureCache = memoize(function(cntryID, color) {
@@ -58,11 +59,31 @@ d3.json('data/world.json', function(err, data) {
     var baseMap = new THREE.Mesh(new THREE.SphereGeometry(200, segments, segments), mapMaterial);
     baseMap.rotation.y = Math.PI;
 
+    // add cities
+    var citiesGeometry = new THREE.SphereGeometry(200, segments, segments);
+    let citiesMaterial = new THREE.MeshPhongMaterial({ transparent: true });
+    let citiesMesh = new THREE.Mesh({ transparent: true });
+    let pointGeometry = new THREE.SphereGeometry(1, 10, 10);
+    let pointMaterial = new THREE.MeshPhongMaterial({ color: '#FF0000', transparent: false });
+    cities.features.forEach(function(city) {
+        var pointMesh = new THREE.Mesh(pointGeometry, pointMaterial);
+        var lng = city.geometry.coordinates[0]
+        var lat = city.geometry.coordinates[1];
+        pointMesh.position.set(
+            200 * Math.sin(lat) * Math.sin(lng),
+            200 * Math.cos(lat),
+            200 * Math.sin(lat) * Math.cos(lng)
+        );
+        citiesMesh.add(pointMesh);
+    }); 
+    citiesMesh.rotation.y = Math.PI;
+
     // create a container node and add the two meshes
     var root = new THREE.Object3D();
     root.scale.set(2.5, 2.5, 2.5);
     root.add(baseGlobe);
     root.add(baseMap);
+	root.add(citiesMesh);
     scene.add(root);
 
     function onGlobeClick(event) {
