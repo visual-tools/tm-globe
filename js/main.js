@@ -67,16 +67,9 @@ d3.json('data/world_cities.json?_=' + new Date().getTime(), function(err, data) 
     let pointMaterial = new THREE.MeshPhongMaterial({ color: '#FF0000', transparent: false });
     cities.forEach(function(city) {
         var pointMesh = new THREE.Mesh(pointGeometry, pointMaterial);
-        var lat = city.coordinates[0] * Math.PI / 180;
-        var lng = city.coordinates[1] * Math.PI / 180;
-        pointMesh.position.set(
-            200 * Math.cos(lat) * Math.sin(lng),
-            200 * Math.sin(lat),
-            200 * Math.cos(lat) * Math.cos(lng)
-        );
+        pointMesh.position.copy(convertToXYZ(city.coordinates, 200))
         citiesMesh.add(pointMesh);
     }); 
-    citiesMesh.rotation.y = -Math.PI/2;
 
     // create a container node and add the meshes
     var root = new THREE.Object3D();
