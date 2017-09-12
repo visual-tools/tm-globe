@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>TM Forum - Accelerating Industry Transformation Through Collaboration</title>
+  <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
+  <script src="../Build/Cesium/Cesium.js"></script>
+  <style>
+      @import url(../Build/Cesium/Widgets/widgets.css);
+      html, body, #cesiumContainer {
+          width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+      }
+  </style>
+
+  <link rel="stylesheet" type="text/css" href="css/tmforum.globe.visual.tools.css">
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+    var viewer = new Cesium.Viewer('cesiumContainer', {
+        imageryProvider : new Cesium.createOpenStreetMapImageryProvider
+            ( { "maximumLevel": 4,
+              },
+            ),
+        baseLayerPicker : false,
+    });
+
+    
+    var iframe = document.getElementsByClassName('cesium-infoBox-iframe')[0];
+    iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms'); 
+
+    var countryData = 
+    { "Brisbane": { "latitude": -27.46794, "longditude": 153.02809,
+                    "billboardImage": "images/countryNames/brisbane.png",
+                    "video": '<iframe src="https://player.vimeo.com/video/182895881?title=0&byline=0&portrait=0"  width="100%" height="300px" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe> <p><a href="https://vimeo.com/182895881">Krista Adams Ivw V1</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
+                  },
+      "Boston": { "latitude": 42.364506, "longditude": -71.038887,
+                  "billboardImage": "images/countryNames/boston.png",
+                  "video": '<iframe src="https://player.vimeo.com/video/183007848?title=0&byline=0&portrait=0" width="100%" height="300px" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe> <p><a href="https://vimeo.com/183007848">Nigel Jacob Ivw V1</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
+                  },
+    }
+
+    Object.keys(countryData)
+      .forEach
+      ( (key, index) =>
+        { var value = countryData[key];
+          viewer.entities.add
+          ({  position : Cesium.Cartesian3.fromDegrees(value.longditude, value.latitude),
+              billboard :
+              { image : value.billboardImage,
+              },
+              description: 
+                '<p class="description country">'+ key          +'</p>' +
+                '<p class="description video">'  + value.video  +'</p>'
+                ,
+          }); 
+        }
+      );
+
+  </script>
+</body>
+</html>
