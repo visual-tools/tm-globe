@@ -36,7 +36,7 @@
     var iframe = document.getElementsByClassName('cesium-infoBox-iframe')[0];
     iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms'); 
 
-    // create  country data dictionary
+    // create content data dictionary
     var contentByLocationDict = 
     { "Brisbane": { "latitude": -27.46794, "longditude": 153.02809,
                     "billboardImage": "images/countryNames/brisbane.png",
@@ -58,6 +58,7 @@
             // "billboardImage": "images/countryNames/boston.png",
             "video":    video,
             "pdf":      pdf,
+            "pdfURL":   "contentAssets/SmartCityCaseStudies/"+pdf
           }
     	}
 
@@ -150,19 +151,19 @@
       addContent
         ( "NYU, New York",
           40.7295174,-73.9986496,
-          ""
+          "",
           "NYUCaseStudy.pdf",
         );
       addContent
         ( "Pakistan",
           30.0679939,60.3256431,
-          ""
+          "",
           "PakistanCaseStudy.pdf",
         );
       addContent
         ( "Palo Alto",
           37.4257657,-122.2053908,
-          ""
+          "",
           "PaloAltoCaseStudy.pdf",
         );
       addContent
@@ -206,8 +207,9 @@
       .forEach
       ( (locationName, index) =>
         { var value = contentByLocationDict[locationName];
-          viewer.entities.add
-          ({  position : Cesium.Cartesian3.fromDegrees(value.longditude, value.latitude),
+          var entityToAdd =
+            { position : Cesium.Cartesian3.fromDegrees(value.longditude, value.latitude),
+              viewFrom: new Cesium.ConstantPositionProperty(Cesium.Cartesian3(0,0, 30000)),
               // billboard :
               // { image : value.billboardImage,
               // },
@@ -232,10 +234,17 @@
               },
               description: 
                 '<link rel="stylesheet" type="text/css" href="css/tmforum.globe.visual.tools.css">' +
-                '<p class="description country">'+ locationName +'</p>' +
-                '<p class="description video">'  + value.video  +'</p>'
+                '<p class="description content">'+ locationName +'</p>'
                 ,
-          }); 
+          }
+          if (value.pdf)
+          { entityToAdd.description += '<p class="description pdf">Executive Summary: <a href="'+value.pdfURL+'" target="_blank" download >' + value.pdf + '</a></p>';
+          }  
+          if (value.video)
+          { entityToAdd.description += '<p class="description video">'  + value.video  +'</p>';
+          }
+          
+          viewer.entities.add(entityToAdd); 
         }
       );
 
