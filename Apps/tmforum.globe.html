@@ -120,7 +120,43 @@
         );
 
 
-    
+    // Iterate through the dictionary and create the interface components
+    Object.keys(contentByLocationDict)
+      .forEach
+      ( (locationName, index) =>
+        { var value = contentByLocationDict[locationName];
+          viewer.entities.add
+          ({  position : Cesium.Cartesian3.fromDegrees(value.longditude, value.latitude),
+              // billboard :
+              // { image : value.billboardImage,
+              // },
+              label: 
+              { 
+                      text: locationName, 
+                      font: '28pt serif', 
+                      
+                      scale: 1.0, 
+                      
+                      verticalOrigin: Cesium.VerticalOrigin.CENTER, 
+                      pixelOffset: new Cesium.Cartesian2(0, 0),
+
+                      style: Cesium.LabelStyle.FILL_AND_OUTLINE, 
+                      fillColor: Cesium.Color.BLACK,
+                      outlineColor: Cesium.Color.WHITE,
+                      outlineWidth: 2, 
+                      showBackground: true,
+                      backgroundColor: new Cesium.Color(0.165, 0.165, 0.165, 0.2),
+                      backgroundPadding: new Cesium.Cartesian2(7,2),
+                      
+              },
+              description: 
+                '<link rel="stylesheet" type="text/css" href="css/tmforum.globe.visual.tools.css">' +
+                '<p class="description country">'+ locationName +'</p>' +
+                '<p class="description video">'  + value.video  +'</p>'
+                ,
+          }); 
+        }
+      );
 
   </script>
 </body>
