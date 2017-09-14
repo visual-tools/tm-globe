@@ -1,3 +1,7 @@
-.description.country
+/*.description.country
 { font-size: 20px;
+}*/
+
+.cesium-viewer-timelineContainer, .cesium-viewer-animationContainer
+{ display: none;
 }
