@@ -234,13 +234,18 @@
                       scale: 1.0, 
                       
                       verticalOrigin: Cesium.VerticalOrigin.CENTER, 
-                      pixelOffset: new Cesium.Cartesian2(0, 0),
+                      pixelOffset: new Cesium.Cartesian2(0, -25),
 
                       style: Cesium.LabelStyle.FILL, 
                       fillColor: Cesium.Color.DARKMAGENTA,
                       
                       translucencyByDistance: new Cesium.NearFarScalar(1.5e2, 1.0, 8.0e7, 0.0),
                       scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.0, 4.0e7, 0.0),
+              },
+              point: 
+              {
+                      color: new Cesium.Color(1.0, 0.0, 0.0, 1.0),
+                      pixelSize: 4
               },
               description: 
                 '<link rel="stylesheet" type="text/css" href="css/tmforum.globe.visual.tools.css">' +
