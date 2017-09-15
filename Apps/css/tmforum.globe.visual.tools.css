@@ -2,6 +2,14 @@
 { font-size: 20px;
 }*/
 
+/*description.video, description.video.image
+{ height: 360px;
+  min-height: 360px;
+
+  width: 90%;
+}*/
+
+
 .cesium-viewer-timelineContainer, .cesium-viewer-animationContainer
 { display: none;
 }

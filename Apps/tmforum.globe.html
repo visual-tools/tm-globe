@@ -31,6 +31,18 @@
         baseLayerPicker : false,
     });
 
+    
+    var scene = viewer.scene;
+    scene.screenSpaceCameraController.enableTilt = false;
+    // scene.screenSpaceCameraController.enableRotate = false;
+    scene.screenSpaceCameraController.enableLook = false;
+
+    scene.screenSpaceCameraController._minimumZoomRate = 3000000
+    scene.screenSpaceCameraController.minimumZoomDistance=2000000;
+
+    // viewer.camera.camera.moveEnd.addEventListener(function() {
+    //     viewChanged.style.display = 'none';
+    // });
 
     // Fix the container infoBox Iframe will not let javascript run in embedded iframes
     var iframe = document.getElementsByClassName('cesium-infoBox-iframe')[0];
@@ -208,7 +220,8 @@
       ( (locationName, index) =>
         { var value = contentByLocationDict[locationName];
           var entityToAdd =
-            { position : Cesium.Cartesian3.fromDegrees(value.longditude, value.latitude),
+            { name: locationName,
+              position : Cesium.Cartesian3.fromDegrees(value.longditude, value.latitude),
               viewFrom: new Cesium.ConstantPositionProperty(Cesium.Cartesian3(0,0, 30000)),
               // billboard :
               // { image : value.billboardImage,
@@ -234,11 +247,14 @@
               },
               description: 
                 '<link rel="stylesheet" type="text/css" href="css/tmforum.globe.visual.tools.css">' +
-                '<p class="description content">'+ locationName +'</p>'
+                ''
                 ,
           }
           if (value.pdf)
           { entityToAdd.description += '<p class="description pdf">Executive Summary: <a href="'+value.pdfURL+'" target="_blank" download >' + value.pdf + '</a></p>';
+            if (! value.video)
+            { entityToAdd.description += '<p class="description video image"><img height="360px" width="90%" src="'  + value.pdfURL + '.jpg"></img></p>';
+            }
           }  
           if (value.video)
           { entityToAdd.description += '<p class="description video">'  + value.video  +'</p>';
