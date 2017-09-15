@@ -20,6 +20,7 @@
 </head>
 <body>
   <div id="cesiumContainer"></div>
+  <div id="creditContainer" style="float: right;"></div>
   <script>
     // Set the default camera location for the viewer - somewhere in the middle east
     Cesium.Camera.DEFAULT_VIEW_FACTOR = 1;
@@ -32,6 +33,7 @@
             ( { "maximumLevel": 3,
               },
             ),
+        creditContainer: 'creditContainer',
         baseLayerPicker : false,
     });
 
