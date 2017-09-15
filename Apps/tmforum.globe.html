@@ -21,6 +21,10 @@
 <body>
   <div id="cesiumContainer"></div>
   <script>
+    // Set the default camera location for the viewer - somewhere in the middle east
+    Cesium.Camera.DEFAULT_VIEW_FACTOR = 1;
+    Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(30,10,50,30);
+    
     // Create a Cesium viewer with an Open Street Maps map on it
     //   the open street maps map has maximum level detail of 4, which seems to be all the countries and some major cities
     var viewer = new Cesium.Viewer('cesiumContainer', {
