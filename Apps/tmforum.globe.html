@@ -217,6 +217,8 @@
           '<iframe src="https://player.vimeo.com/video/183219589?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/183219589">Jessie Adcock Ivw V1</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
         );
 
+    //Create a "DataSource", which is a thing that does the clustering management
+    var contentDataSource = new Cesium.CustomDataSource("contentByLocation");
 
     // Iterate through the dictionary and create the interface components
     Object.keys(contentByLocationDict)
@@ -268,9 +270,12 @@
           { entityToAdd.description += '<p class="description video">'  + value.video  +'</p>';
           }
           
-          viewer.entities.add(entityToAdd); 
+          contentDataSource.entities.add(entityToAdd);
+
         }
       );
+
+      viewer.dataSources.add(contentDataSource);
 
   //     <style>
   //     @import url(css/bucket.css);
