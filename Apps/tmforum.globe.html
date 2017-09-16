@@ -218,14 +218,15 @@
         );
 
     //Create a "DataSource", which is a thing that does the clustering management
-    var contentDataSource = new Cesium.CustomDataSource("contentByLocation");
+    var contentDataSource_labels = new Cesium.CustomDataSource("contentDataSource_labels");
+    var contentDataSource_points = new Cesium.CustomDataSource("contentDataSource_points");
 
     // Iterate through the dictionary and create the interface components
     Object.keys(contentByLocationDict)
       .forEach
       ( (locationName, index) =>
         { var value = contentByLocationDict[locationName];
-          var entityToAdd =
+          var labelEntity =
             { name: locationName,
               position : Cesium.Cartesian3.fromDegrees(value.longditude, value.latitude),
               viewFrom: new Cesium.ConstantPositionProperty(Cesium.Cartesian3(0,0, 30000)),
@@ -250,40 +251,50 @@
                       scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.5, 4.0e7, 0.0),
                       pixelOffsetScaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.0, 4.0e7, 0.1),
               },
-              point: 
-              {
-                      color: new Cesium.Color(1.0, 0.0, 0.0, 1.0),
-                      pixelSize: 4
-              },
+              
               description: 
                 '<link rel="stylesheet" type="text/css" href="css/tmforum.globe.visual.tools.css">' +
                 ''
                 ,
           }
+          var pointEntity =
+            { name: locationName,
+              position : Cesium.Cartesian3.fromDegrees(value.longditude, value.latitude),
+              viewFrom: new Cesium.ConstantPositionProperty(Cesium.Cartesian3(0,0, 30000)),
+              point: 
+              {
+                      color: new Cesium.Color(1.0, 0.0, 0.0, 1.0),
+                      pixelSize: 4
+              },
+
+            }
+          // pointEntity.parent = labelEntity;
           if (value.pdf)
-          { entityToAdd.description += '<p class="description pdf"><a href="'+value.pdfURL+'" target="_blank" download >Download PDF Case Study</a></p>';
+          { labelEntity.description += '<p class="description pdf"><a href="'+value.pdfURL+'" target="_blank" download >Download PDF Case Study</a></p>';
             if (! value.video)
-            { entityToAdd.description += '<p class="description video image"><img height="360px" width="90%" src="'  + value.pdfURL + '.jpg"></img></p>';
+            { labelEntity.description += '<p class="description video image"><img height="360px" width="90%" src="'  + value.pdfURL + '.jpg"></img></p>';
             }
           }  
           if (value.video)
-          { entityToAdd.description += '<p class="description video">'  + value.video  +'</p>';
+          { labelEntity.description += '<p class="description video">'  + value.video  +'</p>';
           }
           
-          contentDataSource.entities.add(entityToAdd);
+          contentDataSource_labels.entities.add(labelEntity);
+          contentDataSource_points.entities.add(pointEntity);
 
         }
       );
 
-      viewer.dataSources.add(contentDataSource);
+      viewer.dataSources.add(contentDataSource_labels);
+      viewer.dataSources.add(contentDataSource_points);
 
-      var enabled                                     = true;
-      var pixelRange                                  = 15;
-      var minimumClusterSize                          = 2;
+      var enabled                                             = true;
+      var pixelRange                                          = 15;
+      var minimumClusterSize                                  = 2;
 
-      contentDataSource.clustering.enabled            = enabled;
-      contentDataSource.clustering.pixelRange         = pixelRange;
-      contentDataSource.clustering.minimumClusterSize = minimumClusterSize;
+      contentDataSource_labels.clustering.enabled             = enabled;
+      contentDataSource_labels.clustering.pixelRange          = pixelRange;
+      contentDataSource_labels.clustering.minimumClusterSize  = minimumClusterSize;
 
 
   //     <style>
