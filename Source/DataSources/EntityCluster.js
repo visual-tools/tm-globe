@@ -407,6 +407,14 @@ define([
                 entityCluster._clusterPointCollection = undefined;
             }
 
+            if  (   !defined(entityCluster._clusteredLabelCollection)
+                &&  !defined(entityCluster._clusteredBillboardCollection)
+                &&  !defined(entityCluster._clusteredPointCollection)
+                )
+            {   
+                console.log("EntityCluster is empty?");
+                console.log(entityCluster);
+            }
             entityCluster._previousClusters = newClusters;
             entityCluster._previousHeight = currentHeight;
         };

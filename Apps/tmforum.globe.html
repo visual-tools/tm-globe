@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   <title>TM Forum - Accelerating Industry Transformation Through Collaboration</title>
   <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
-  <script src="../Build/Cesium/Cesium.js"></script>
+  <script src="../Build/CesiumUnminified/Cesium.js"></script>
   <style>
       @import url(../Build/Cesium/Widgets/widgets.css);
       html, body, #cesiumContainer {
@@ -286,27 +286,84 @@
       contentDataSource.clustering.clusterPoints       = false;
 
       contentDataSource.clustering.clusterEvent.addEventListener
-      ( (entities, cluster) =>
-        { debugger;
-          var clusterLabelArray = [];
-          for (var i=0; i < entities.length; i++)
-          { clusterLabelArray.push(entities[i]._label._text._value)
-          } 
-          var clusterLabelText            = clusterLabelArray.join("\n");
-          cluster.label.text              = clusterLabelText
-          cluster.label.style             = Cesium.LabelStyle.FILL_AND_OUTLINE; 
-          cluster.label.fillColor         = Cesium.Color.BLACK;
-          cluster.label.outlineColor      = Cesium.Color.YELLOW;
+      ( (entities, cluster, entityCluster) =>
+        { console.log("tmforum.globe.html: clusterEvent: entityCluster: ", entityCluster);
+          if (cluster === undefined || cluster.label === undefined)
+          { console.log("tmforum.globe.html: clusterEvent: cluster not defined");
+            // return;
+          }
+          else
+          { var clusterLabelArray = [];
+            for (var i=0; i < entities.length; i++)
+            { clusterLabelArray.push(entities[i]._label._text._value)
+            } 
+            var clusterLabelText            = clusterLabelArray.join("\n");
+            var clusterEntity =
+            { "name": "cluster",
+              "position" : cluster.label.position,
+              // "viewFrom": new Cesium.ConstantPositionProperty(Cesium.Cartesian3(0,0, 30000)),
+              // billboard :
+              // { image : value.billboardImage,
+              // },
+              label: 
+              { 
+                      "text": clusterLabelText, 
+                      "font": '28pt Helvetica', 
+                      
+                      "scale": 1.0, 
+                      
+                      "horizontalOrigin": Cesium.HorizontalOrigin.CENTER,
+                      "verticalOrigin": Cesium.VerticalOrigin.CENTER, 
 
-          cluster.label.scaleByDistance   = new Cesium.NearFarScalar(1.5e2, 1.5, 4.0e7, 0.0),
-          cluster.label.pixelOffsetScaleByDistance = new Cesium.NearFarScalar(1.5e2, 1.0, 4.0e7, 0.1),
+                      // "pixelOffset": new Cesium.Cartesian2(0, -25),
+
+                      "style": Cesium.LabelStyle.FILL_AND_OUTLINE, 
+                      "fillColor": Cesium.Color.BLACK,
+                      "outlineColor": Cesium.Color.YELLOW,
+                      
+                      // translucencyByDistance: new Cesium.NearFarScalar(1.5e2, 1.0, 8.0e7, 0.0),
+                      "scaleByDistance": new Cesium.NearFarScalar(1.5e2, 1.5, 4.0e7, 0.0),
+                      "pixelOffsetScaleByDistance": new Cesium.NearFarScalar(1.5e2, 1.0, 4.0e7, 0.1),
+              },
+              // point: 
+              // {
+              //         color: new Cesium.Color(1.0, 0.0, 0.0, 1.0),
+              //         pixelSize: 4
+              // },
+              description: 
+                '<link rel="stylesheet" type="text/css" href="css/tmforum.globe.visual.tools.css">' +
+                ''
+                ,
+            }
+            viewer.entities.add(clusterEntity);
+            debugger;
+            console.log("previousClusters", clusterEntity._previousClusters);
+          }
+
+
+            // cluster.label.text              = clusterLabelText
+            
+            // cluster.label.style             = Cesium.LabelStyle.FILL_AND_OUTLINE; 
+            // cluster.label.fillColor         = Cesium.Color.BLACK;
+            // cluster.label.outlineColor      = Cesium.Color.YELLOW;
+
+
+            // cluster.label.scaleByDistance   = new Cesium.NearFarScalar(1.5e2, 1.5, 4.0e7, 0.3),
+            // cluster.label.pixelOffsetScaleByDistance = new Cesium.NearFarScalar(1.5e2, 1.0, 4.0e7, 0.1),
+            
+            // cluster.label.horizontalOrigin  = Cesium.HorizontalOrigin.CENTER;
+            // cluster.label.verticalOrigin    = Cesium.VerticalOrigin.CENTER;
+            // cluster.label.show              = true;
           
-          cluster.label.horizontalOrigin  = Cesium.HorizontalOrigin.CENTER;
-          cluster.label.verticalOrigin    = Cesium.VerticalOrigin.CENTER;
-          cluster.label.show              = true;
+            // if (entityCluster !== undefined)
+            // { console.log("tmforum.globe.html: clusterEvent: entityCluster is: ", entityCluster);
+            //   // make an entity that can be clicked on that holds this label
+              
+            //   viewer.entities.add(clusterEntity);
+            //   // entityCluster.getLabel(clusterEntity);
 
-
-          cluster.description = "SoMEETHING"
+            // }
+          
         }
       );
 
