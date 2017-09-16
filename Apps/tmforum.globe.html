@@ -277,6 +277,15 @@
 
       viewer.dataSources.add(contentDataSource);
 
+      var enabled                                     = true;
+      var pixelRange                                  = 15;
+      var minimumClusterSize                          = 2;
+
+      contentDataSource.clustering.enabled            = enabled;
+      contentDataSource.clustering.pixelRange         = pixelRange;
+      contentDataSource.clustering.minimumClusterSize = minimumClusterSize;
+
+
   //     <style>
   //     @import url(css/bucket.css);
   //     #toolbar {
