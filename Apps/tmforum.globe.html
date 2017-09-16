@@ -13,14 +13,21 @@
   <style>
       @import url(../Build/Cesium/Widgets/widgets.css);
       html, body, #cesiumContainer {
-          width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+          position: relative; width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+      }
+      #logoContainer {
+          position: absolute; right: 35px; bottom: 0px; height: 60px;
       }
   </style>
   <link rel="stylesheet" type="text/css" href="css/tmforum.globe.visual.tools.css">
 </head>
 <body>
-  <div id="cesiumContainer"></div>
-  <div id="creditContainer" style="float: right;"></div>
+  <div id="cesiumContainer">
+  </div>
+  <div id="creditContainer"></div>
+  <div id="logoContainer">
+    <a href="https://www.tmforum.org"><img src="images/tmforum_logo.png" title="TM Forum" style="height: 100%;" /></a>
+  </div>
   <script>
     // Set the default camera location for the viewer - somewhere in the middle east
     Cesium.Camera.DEFAULT_VIEW_FACTOR = 1;
