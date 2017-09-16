@@ -218,8 +218,7 @@
         );
 
     //Create a "DataSource", which is a thing that does the clustering management
-    var contentDataSource_labels = new Cesium.CustomDataSource("contentDataSource_labels");
-    var contentDataSource_points = new Cesium.CustomDataSource("contentDataSource_points");
+    var contentDataSource = new Cesium.CustomDataSource("contentDataSource");
 
     // Iterate through the dictionary and create the interface components
     Object.keys(contentByLocationDict)
@@ -251,24 +250,16 @@
                       scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.5, 4.0e7, 0.0),
                       pixelOffsetScaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.0, 4.0e7, 0.1),
               },
-              
-              description: 
-                '<link rel="stylesheet" type="text/css" href="css/tmforum.globe.visual.tools.css">' +
-                ''
-                ,
-          }
-          var pointEntity =
-            { name: locationName,
-              position : Cesium.Cartesian3.fromDegrees(value.longditude, value.latitude),
-              viewFrom: new Cesium.ConstantPositionProperty(Cesium.Cartesian3(0,0, 30000)),
               point: 
               {
                       color: new Cesium.Color(1.0, 0.0, 0.0, 1.0),
                       pixelSize: 4
               },
-
-            }
-          // pointEntity.parent = labelEntity;
+              description: 
+                '<link rel="stylesheet" type="text/css" href="css/tmforum.globe.visual.tools.css">' +
+                ''
+                ,
+          }
           if (value.pdf)
           { labelEntity.description += '<p class="description pdf"><a href="'+value.pdfURL+'" target="_blank" download >Download PDF Case Study</a></p>';
             if (! value.video)
@@ -279,22 +270,45 @@
           { labelEntity.description += '<p class="description video">'  + value.video  +'</p>';
           }
           
-          contentDataSource_labels.entities.add(labelEntity);
-          contentDataSource_points.entities.add(pointEntity);
-
+          contentDataSource.entities.add(labelEntity);
         }
       );
 
-      viewer.dataSources.add(contentDataSource_labels);
-      viewer.dataSources.add(contentDataSource_points);
+      viewer.dataSources.add(contentDataSource);
 
       var enabled                                             = true;
-      var pixelRange                                          = 15;
+      var pixelRange                                          = 10;
       var minimumClusterSize                                  = 2;
 
-      contentDataSource_labels.clustering.enabled             = enabled;
-      contentDataSource_labels.clustering.pixelRange          = pixelRange;
-      contentDataSource_labels.clustering.minimumClusterSize  = minimumClusterSize;
+      contentDataSource.clustering.enabled             = enabled;
+      contentDataSource.clustering.pixelRange          = pixelRange;
+      contentDataSource.clustering.minimumClusterSize  = minimumClusterSize;
+      contentDataSource.clustering.clusterPoints       = false;
+
+      contentDataSource.clustering.clusterEvent.addEventListener
+      ( (entities, cluster) =>
+        { debugger;
+          var clusterLabelArray = [];
+          for (var i=0; i < entities.length; i++)
+          { clusterLabelArray.push(entities[i]._label._text._value)
+          } 
+          var clusterLabelText            = clusterLabelArray.join("\n");
+          cluster.label.text              = clusterLabelText
+          cluster.label.style             = Cesium.LabelStyle.FILL_AND_OUTLINE; 
+          cluster.label.fillColor         = Cesium.Color.BLACK;
+          cluster.label.outlineColor      = Cesium.Color.YELLOW;
+
+          cluster.label.scaleByDistance   = new Cesium.NearFarScalar(1.5e2, 1.5, 4.0e7, 0.0),
+          cluster.label.pixelOffsetScaleByDistance = new Cesium.NearFarScalar(1.5e2, 1.0, 4.0e7, 0.1),
+          
+          cluster.label.horizontalOrigin  = Cesium.HorizontalOrigin.CENTER;
+          cluster.label.verticalOrigin    = Cesium.VerticalOrigin.CENTER;
+          cluster.label.show              = true;
+
+
+          cluster.description = "SoMEETHING"
+        }
+      );
 
 
   //     <style>
