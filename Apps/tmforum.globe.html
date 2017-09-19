@@ -73,6 +73,8 @@
                     "billboardImage": "images/countryNames/brisbane.png",
                     "video": '<iframe src="https://player.vimeo.com/video/182895881?title=0&byline=0&portrait=0"  width="100%" height="300px" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe> <p><a href="https://vimeo.com/182895881">Krista Adams Ivw V1</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
                     "pdf": "BrisbaneCaseStudy.pdf",
+                    "labelOffsetX": 30,
+                    "labelOffsetY": -15,
                   },
       "Boston": { "latitude": 42.364506, "longditude": -71.038887,
                   "billboardImage": "images/countryNames/boston.png",
@@ -82,14 +84,16 @@
     }
 
     var addContent = 
-      ( countryName, latitude, longditude, video, pdf ) =>    
+      ( countryName, latitude, longditude, video, pdf, labelOffsetX, labelOffsetY ) =>    
       { contentByLocationDict[countryName] = 
           { "latitude": latitude, "longditude": longditude, 
             // "billboardImage": "images/countryNames/"+countryName.toLowerCase(), 
             // "billboardImage": "images/countryNames/boston.png",
             "video":    video,
             "pdf":      pdf,
-            "pdfURL":   "contentAssets/SmartCityCaseStudies/"+pdf
+            "pdfURL":   "contentAssets/SmartCityCaseStudies/"+pdf,
+            "labelOffsetX": labelOffsetX,
+            "labelOffsetY": labelOffsetY,
           }
     	}
 
@@ -109,12 +113,14 @@
           50.7374, 7.0982, 
           '<iframe src="https://player.vimeo.com/video/182895880?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/182895880">Goodarz Mahbobi Ivw V1</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
           "BonnCaseStudy.pdf",
+          10, 50,
         );
       addContent
         ( "Bristol",
           51.4686194,-2.7307936,
           '<iframe src="https://player.vimeo.com/video/139925846?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/139925846">Paul Wilson Interview at Smart City Event</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
           "BristolCaseStudy.pdf",
+          -10, 50,
         );
       addContent
         ( "Buenos Aires",
@@ -126,18 +132,22 @@
         ( "Dheli-Mumbai Corridor",
          23.431749,75.563965,
          '<iframe src="https://player.vimeo.com/video/183142713?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/183142713">Alkesh Kumar Sharma Ivw V1</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
+         "",
+         40, -10,
        );
       addContent
         ( "Dholera",
           22.2388351,72.1639649,
           "",
           "DholeraCaseStudy.pdf",
+          -30, 50,
         );
       addContent
         ( "Dubai",
           25.0757073,54.9475419,
           '<iframe src="https://player.vimeo.com/video/183295147?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/183295147">Abdulla Ali AL-Madani Ivw V1</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
           "DubaiCaseStudy.pdf",
+          0, -10,
         );
       addContent
         ( "Indonesia",
@@ -149,6 +159,8 @@
         ( "Ipswich",
           -27.695544, 152.685365,
           '<iframe src="https://player.vimeo.com/video/183023794?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/183023794">Paul Pissale Ivw V1</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
+          "",
+          -30, 45,
         );
       addContent
         ( "Johannesburg",
@@ -161,6 +173,7 @@
           24.4264395,54.6017502,
           '<iframe src="https://player.vimeo.com/video/183142714?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/183142714">Anthony Mallows Ivw V1</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
           "MasdarCaseStudy.pdf",
+          0, 45,
         );
       addContent
         ( "Milton Keynes",
@@ -178,6 +191,7 @@
           40.6976701,-74.2598775,
           "",
           "NYCCaseStudy.pdf",
+          0, 50
         );
       addContent
         ( "Pakistan",
@@ -237,6 +251,12 @@
       .forEach
       ( (locationName, index) =>
         { var value = contentByLocationDict[locationName];
+          
+          var labelOffsetX = 0;
+          var labelOffsetY = -25;
+          if (value.labelOffsetX) labelOffsetX += value.labelOffsetX;
+          if (value.labelOffsetY) labelOffsetY += value.labelOffsetY;
+
           var entityToAdd =
             { name: locationName,
               position : Cesium.Cartesian3.fromDegrees(value.longditude, value.latitude),
@@ -244,6 +264,8 @@
               // billboard :
               // { image : value.billboardImage,
               // },
+
+
               label: 
               { 
                       text: locationName, 
@@ -252,7 +274,8 @@
                       scale: 1.0, 
                       
                       verticalOrigin: Cesium.VerticalOrigin.CENTER, 
-                      pixelOffset: new Cesium.Cartesian2(0, -25),
+                      pixelOffset: new Cesium.Cartesian2(labelOffsetX, labelOffsetY),
+
 
                       style: Cesium.LabelStyle.FILL_AND_OUTLINE, 
                       fillColor: Cesium.Color.BLACK,
@@ -260,6 +283,7 @@
                       
                       // translucencyByDistance: new Cesium.NearFarScalar(1.5e2, 1.0, 8.0e7, 0.0),
                       scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.5, 4.0e7, 0.0),
+
                       pixelOffsetScaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.0, 4.0e7, 0.1),
               },
               point: 
