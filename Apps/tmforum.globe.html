@@ -43,7 +43,7 @@
     //   the open street maps map has maximum level detail of 4, which seems to be all the countries and some major cities
     var viewer = new Cesium.Viewer('cesiumContainer', {
         imageryProvider : new Cesium.createOpenStreetMapImageryProvider
-            ( { "maximumLevel": 3,
+            ( { "maximumLevel": 4,
               },
             ),
         creditContainer: 'creditContainer',
@@ -96,7 +96,7 @@
       addContent
         ( "Atlanta",
           33.7679192,-84.5606908,
-          "",
+          '<iframe src="https://player.vimeo.com/video/140048801?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/140048801">Samir Saini Interview at Smart City Event</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
           "AtlantaCaseStudy.pdf",
         );
       addContent
@@ -113,7 +113,7 @@
       addContent
         ( "Bristol",
           51.4686194,-2.7307936,
-          "",
+          '<iframe src="https://player.vimeo.com/video/139925846?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/139925846">Paul Wilson Interview at Smart City Event</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
           "BristolCaseStudy.pdf",
         );
       addContent
@@ -136,7 +136,7 @@
       addContent
         ( "Dubai",
           25.0757073,54.9475419,
-          "",
+          '<iframe src="https://player.vimeo.com/video/183295147?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/183295147">Abdulla Ali AL-Madani Ivw V1</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
           "DubaiCaseStudy.pdf",
         );
       addContent
@@ -153,7 +153,7 @@
       addContent
         ( "Johannesburg",
           -26.1713505,27.9699836,
-          "",
+          '<iframe src="https://player.vimeo.com/video/183295148?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/183295148">Tinashe Mushayanyama Ivw V1</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p',
           "JohannesburgCaseStudy.pdf",
         );
       addContent
@@ -188,7 +188,7 @@
       addContent
         ( "Palo Alto",
           37.4257657,-122.2053908,
-          "",
+          '<iframe src="https://player.vimeo.com/video/182547765?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/182547765">TM Forum Smart Ciry 2016 - Jonathan Reichenthal Ivw V1</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
           "PaloAltoCaseStudy.pdf",
         );
       addContent
@@ -224,6 +224,11 @@
         ( "Vancouver",
           49.246292, -123.11622,
           '<iframe src="https://player.vimeo.com/video/183219589?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/183219589">Jessie Adcock Ivw V1</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
+        );
+      addContent
+        ( "Yinchuan",
+          38.46806, 106.27306,
+          '<iframe src="https://player.vimeo.com/video/182547769?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/182547769">TM Forum Smart City 2016 - Guo Baichun without Subtitles</a> from <a href="https://vimeo.com/telcoprofessionals">TelcoProfessionals</a> on <a href="https://vimeo.com">Vimeo</a>.</p>'
         );
 
 
@@ -268,7 +273,7 @@
                 ,
           }
           if (value.pdf)
-          { entityToAdd.description += '<p class="description pdf"><a href="'+value.pdfURL+'" target="_blank" download >Download PDF Case Study</a></p>';
+          { entityToAdd.description += '<p class="description pdf"><a href="'+value.pdfURL+'" target="_blank" download >Download ' + locationName + ' PDF Case Study </a></p>';
             if (! value.video)
             { entityToAdd.description += '<p class="description video image"><img height="360px" width="90%" src="'  + value.pdfURL + '.jpg"></img></p>';
             }
