@@ -51,17 +51,16 @@
     });
 
     
+    // TODO: keep the earth at natural North / South alignment
     var scene = viewer.scene;
-    scene.screenSpaceCameraController.enableTilt = false;
-    // scene.screenSpaceCameraController.enableRotate = false;
-    scene.screenSpaceCameraController.enableLook = false;
+    // scene.screenSpaceCameraController.enableTilt = false;
+    // // scene.screenSpaceCameraController.enableRotate = false;
+    // scene.screenSpaceCameraController.enableLook = false;
 
+    // Keep the camera responsive and reasonable
+    //   TODO: add a maximumZoomDistance
     scene.screenSpaceCameraController._minimumZoomRate = 3000000
     scene.screenSpaceCameraController.minimumZoomDistance=2000000;
-
-    // viewer.camera.camera.moveEnd.addEventListener(function() {
-    //     viewChanged.style.display = 'none';
-    // });
 
     // Fix the container infoBox Iframe will not let javascript run in embedded iframes
     var iframe = document.getElementsByClassName('cesium-infoBox-iframe')[0];
@@ -85,6 +84,7 @@
                   },
     }
 
+    // create Helper function to add content to dictionary
     var addContent = 
       ( countryName, latitude, longditude, video, pdf, labelOffsetX, labelOffsetY ) =>    
       { contentByLocationDict[countryName] = 
@@ -99,6 +99,7 @@
           }
     	}
 
+      // add the content
       addContent
         ( "Atlanta",
           33.7679192,-84.5606908,
@@ -111,10 +112,15 @@
           '<iframe src="https://player.vimeo.com/video/182562653?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>',
         );
       addContent
-        ( "Bonn", 
+        ( // Name of the Location
+          "Bonn", 
+          // Lat / Long of the location
           50.7374, 7.0982, 
+          // html content to embed in the infobox
           '<iframe src="https://player.vimeo.com/video/182895880?title=0&byline=0&portrait=0" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>',
+          // pdf download content
           "BonnCaseStudy.pdf",
+          // pixel offset for the location label 
           68, 25,
         );
       addContent
@@ -254,22 +260,28 @@
     Object.keys(contentByLocationDict)
       .forEach
       ( (locationName, index) =>
-        { var value = contentByLocationDict[locationName];
+        { // get value from the dictionary  by key
+          var value = contentByLocationDict[locationName];
           
+          // calculate the offset in pixels of the label
+          //   default is to place the label just above the location (0, -25)
           var labelOffsetX = 0;
           var labelOffsetY = -25;
           if (value.labelOffsetX) labelOffsetX += value.labelOffsetX;
           if (value.labelOffsetY) labelOffsetY += value.labelOffsetY;
 
+          // build the Cesium Entity to add
+          //   (sadly the cesium API page doesnt link to individual entries)
+          //   but the API page is here: https://cesiumjs.org/refdoc/
           var entityToAdd =
-            { name: locationName,
+            { // this is used for the infobox heading
+              name: locationName,
+              // long lat
               position : Cesium.Cartesian3.fromDegrees(value.longditude, value.latitude),
+              // not used
               viewFrom: new Cesium.ConstantPositionProperty(Cesium.Cartesian3(0,0, 30000)),
-              // billboard :
-              // { image : value.billboardImage,
-              // },
-
-
+              
+              // written label on map
               label: 
               { 
                       text: locationName, 
@@ -285,31 +297,35 @@
                       fillColor: Cesium.Color.BLACK,
                       outlineColor: Cesium.Color.YELLOW,
                       
-                      // translucencyByDistance: new Cesium.NearFarScalar(1.5e2, 1.0, 8.0e7, 0.0),
+                      // this used to shrink the labels when the user zooms out
                       scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.5, 4.0e7, 0.0),
-
+                      // this is used to make the shrinking look more accurate
                       pixelOffsetScaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.0, 4.0e7, 0.1),
               },
               point: 
-              {
+              {       // A red dot for the location
                       color: new Cesium.Color(1.0, 0.0, 0.0, 1.0),
                       pixelSize: 4
               },
+              // insert the stylesheet into the infobox iframe
               description: 
                 '<link rel="stylesheet" type="text/css" href="css/tmforum.globe.visual.tools.css">' +
                 ''
                 ,
           }
+          // add the pdf and its image if necessary
           if (value.pdf)
           { entityToAdd.description += '<p class="description pdf"><a href="'+value.pdfURL+'" target="_blank" download >Download ' + locationName + ' PDF Case Study </a></p>';
             if (! value.video)
             { entityToAdd.description += '<p class="description video image"><img height="360px" width="90%" src="'  + value.pdfURL + '.jpg"></img></p>';
             }
           }  
+          // add the embeded HTML content
           if (value.video)
           { entityToAdd.description += '<p class="description video">'  + value.video  +'</p>';
           }
           
+          // add the entity to the viewer entityCollection
           viewer.entities.add(entityToAdd); 
         }
       );
